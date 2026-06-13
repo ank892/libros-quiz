@@ -1,36 +1,63 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# El libro que te está esperando
 
-## Getting Started
+Una experiencia interactiva de menos de 3 minutos que recomienda al lector uno
+de los cuatro libros de **Miguel Fuentes** según el momento de vida que está
+atravesando.
 
-First, run the development server:
+## Los cuatro libros
+
+| Libro | Tema central | Para quién |
+| --- | --- | --- |
+| **El año en que aprendí a vivir** | Crisis, presencia, despertar | Quien sospecha que se está perdiendo lo importante |
+| **Los Mapas Mágicos de Sofía** | Conversaciones difíciles con niños | Familias con un ser querido enfermo |
+| **Ellos en Nosotros** | Duelo, legado paterno | Quien no terminó de conocer a su padre |
+| **Ellas y Nosotros** | Nostalgia, juventud, primeros amores | Quien todavía recuerda el tono de un beeper |
+
+## Diseño de la experiencia
+
+El flujo está construido sobre principios de **PNL aplicada al copywriting**
+y de **investigación en marketing emocional** —no para manipular, sino para
+respetar el tiempo del visitante:
+
+- **Hero** con un *pattern interrupt*: una promesa concreta y un tiempo
+  honesto ("menos de 3 minutos").
+- **5 preguntas** con micro-pausas (*pacing*) que funcionan como *yes-set*,
+  anclajes sensoriales y *future pacing*.
+- **Resultado** con cita literal del libro (mirror neurons), justificación
+  personalizada del match, y dos llamados a la acción de baja fricción:
+  comprar o conversar con el autor.
+
+No pide email, no rastrea, no spamea.
+
+## Stack
+
+- Next.js 16 (App Router, TypeScript)
+- Tailwind CSS v4
+- Framer Motion
+- Deploy en Vercel
+
+## Desarrollo
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Producción
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Personalización
 
-## Learn More
+- Las preguntas, ponderaciones y datos de cada libro viven en
+  `src/lib/books.ts`.
+- Los enlaces de compra (`cta.buyHref`) y el correo de contacto
+  (`cta.talkHref`) deben actualizarse cuando estén disponibles los enlaces
+  reales de Amazon / tienda y la dirección del autor.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+© 2026 Miguel Fuentes. Todos los derechos reservados.
