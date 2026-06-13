@@ -139,7 +139,7 @@ export const BOOKS: Record<BookId, Book> = {
       },
     ],
     ticoAnchor:
-      "Zapote, la casa de don Luis, los vecinos que llegan sin avisar, el WhatsApp familiar alternando cadenas de oración con trámites. Un duelo costarricense, contado sin solemnidad.",
+      "Una casa familiar tica con un patio que cruje, vecinos que llegan sin avisar, el WhatsApp familiar alternando cadenas de oración con trámites, y una tía con receta herbal para todo. Un duelo costarricense, contado sin solemnidad.",
     palette: {
       from: "#070a18",
       via: "#0f1d3a",
@@ -178,7 +178,7 @@ export const BOOKS: Record<BookId, Book> = {
       },
     ],
     ticoAnchor:
-      "Mall San Pedro 1996, la Fuente de la Hispanidad, fogata en Jacó, beepers, Nokia 5110, las gemelas del Saint Clare y la tarde en que un grupo de güilas creyó que todo lo que vivían iba a durar para siempre.",
+      "Una novela tica que pasa entre 1996 y hoy: graduación del cole, viaje a Jacó, beepers, Nokia 5110, foodcourts olvidados y la tarde en que un grupo de güilas creyó que todo lo que vivían iba a durar para siempre.",
     palette: {
       from: "#1a0820",
       via: "#7b1d4a",
@@ -290,27 +290,27 @@ export const QUESTIONS: Question[] = [
     prompt: "¿Qué imagen te suena más a casa?",
     options: [
       {
-        label: "Un café negro a las 6 de la mañana, antes de que despierte el resto",
+        label: "Un café chorreado a las 6 de la mañana, antes de que despierte el resto",
         tag: "café antes del mundo",
         echo: "Ese café es media biografía. Anotado.",
         weights: { ano: 2, ellos: 2 },
       },
       {
-        label: "El foodcourt del Mall San Pedro a la una de la tarde",
-        tag: "Mall San Pedro",
-        echo: "Pura vida. Si oíste a Jorge masticando, ya sabemos por dónde vamos.",
+        label: "Un parque un viernes en la noche, con los amigos del cole",
+        tag: "viernes con la mae",
+        echo: "Pura vida. Esa banda sonora todavía suena en algún lado.",
         weights: { ellas: 3 },
       },
       {
-        label: "Un patio en Zapote con un mango cargado",
-        tag: "patio de Zapote",
-        echo: "Esa casa cruje. Y se queda con vos.",
+        label: "Un patio con un palo de mango cargado y la radio prendida",
+        tag: "patio con mango",
+        echo: "Esa casa cruje en los lugares correctos. Anotado.",
         weights: { ellos: 3 },
       },
       {
-        label: "Una sala con dibujos en la mesa y crayones por todo lado",
+        label: "Una mesa con dibujos a medio terminar y crayones por todo lado",
         tag: "crayones y migas",
-        echo: "Esa sala tiene tres voces hablando al mismo tiempo. Lo sabemos.",
+        echo: "Esa mesa tiene tres voces hablando al mismo tiempo. Lo sabemos.",
         weights: { sofia: 3 },
       },
     ],

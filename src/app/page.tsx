@@ -7,6 +7,8 @@ import BookCover from "@/components/BookCover";
 
 type Stage = "hero" | "quiz" | "echo" | "result";
 
+const ECHO_AUTO_MS = 4500;
+
 export default function Home() {
   const [stage, setStage] = useState<Stage>("hero");
   const [step, setStep] = useState(0);
@@ -37,6 +39,15 @@ export default function Home() {
     return computed;
   }, [answers]);
 
+  const advanceFromEcho = () => {
+    if (step + 1 >= QUESTIONS.length) {
+      setStage("result");
+    } else {
+      setStep(step + 1);
+      setStage("quiz");
+    }
+  };
+
   const onChoose = (optionIdx: number) => {
     const q = QUESTIONS[step];
     const opt = q.options[optionIdx];
@@ -44,15 +55,6 @@ export default function Home() {
     setAnswers(next);
     setLastEcho({ tag: opt.tag, echo: opt.echo });
     setStage("echo");
-    // Auto-advance from echo
-    window.setTimeout(() => {
-      if (step + 1 >= QUESTIONS.length) {
-        setStage("result");
-      } else {
-        setStep(step + 1);
-        setStage("quiz");
-      }
-    }, 1300);
   };
 
   const restart = () => {
@@ -94,7 +96,13 @@ export default function Home() {
           />
         )}
         {stage === "echo" && lastEcho && (
-          <Echo key={`echo-${step}`} tag={lastEcho.tag} echo={lastEcho.echo} />
+          <Echo
+            key={`echo-${step}`}
+            tag={lastEcho.tag}
+            echo={lastEcho.echo}
+            isLast={step + 1 >= QUESTIONS.length}
+            onContinue={advanceFromEcho}
+          />
         )}
         {stage === "result" && (
           <Result
@@ -315,30 +323,59 @@ function Quiz({
 
 /* ---------------- ECHO (between questions) ---------------- */
 
-function Echo({ tag, echo }: { tag: string; echo: string }) {
+function Echo({
+  tag,
+  echo,
+  isLast,
+  onContinue,
+}: {
+  tag: string;
+  echo: string;
+  isLast: boolean;
+  onContinue: () => void;
+}) {
+  // Auto-advance fallback so the experience never stalls, but slow enough to read.
+  useEffect(() => {
+    const t = window.setTimeout(onContinue, ECHO_AUTO_MS);
+    return () => window.clearTimeout(t);
+  }, [onContinue]);
+
   return (
     <motion.section
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -8 }}
-      transition={{ duration: 0.35 }}
+      transition={{ duration: 0.4 }}
       className="relative w-full max-w-xl px-6 py-12 text-center"
     >
       <p className="text-xs uppercase tracking-[0.22em] text-foreground/45">
         Anotado: <span className="text-foreground/80">{tag}</span>
       </p>
-      <p className="font-serif mt-4 text-2xl sm:text-3xl leading-snug text-foreground/95">
+      <p className="font-serif mt-5 text-2xl sm:text-3xl leading-snug text-foreground/95">
         “{echo}”
       </p>
+
+      <button
+        onClick={onContinue}
+        className="mt-9 inline-flex items-center gap-2 rounded-full bg-foreground/95 px-7 py-3 text-background text-sm sm:text-base font-medium transition-transform hover:scale-[1.02]"
+      >
+        {isLast ? "Ver tu libro" : "Siguiente"}
+        <span aria-hidden>→</span>
+      </button>
+
+      {/* Subtle progress ring (purely visual cue that auto-advance exists) */}
       <motion.div
-        initial={{ width: 0 }}
-        animate={{ width: "100%" }}
-        transition={{ duration: 1.2, ease: "linear" }}
-        className="mt-8 mx-auto h-[2px] max-w-[160px]"
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: 1 }}
+        transition={{ duration: ECHO_AUTO_MS / 1000, ease: "linear" }}
+        className="mt-7 mx-auto h-[2px] max-w-[160px] origin-left"
         style={{
           background: "linear-gradient(90deg, #f4c47a, #ff8c5a, #f59ec0)",
         }}
       />
+      <p className="mt-2 text-[10px] uppercase tracking-[0.22em] text-foreground/35">
+        Avanza solo · o tocá para continuar
+      </p>
     </motion.section>
   );
 }
