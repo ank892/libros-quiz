@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { BOOKS, QUESTIONS, scoreAnswers, type BookId } from "@/lib/books";
 import BookCover from "@/components/BookCover";
+import SlotMachine from "@/components/SlotMachine";
 
 type Stage = "hero" | "quiz" | "echo" | "result";
 
@@ -175,8 +176,33 @@ function Hero({ onBegin }: { onBegin: () => void }) {
       >
         Siete preguntas honestas. Tres minutos. Sin email, sin trampa, sin
         algoritmo que te siga después. Al final te explico, con tus propias
-        respuestas, por qué te recomiendo el libro que te recomiendo.
+        respuestas, por qué te recomiendo el libro que te recomiendo —
+        <strong className="text-foreground"> y tirás la ruleta para llevarte algo.</strong>
       </motion.p>
+
+      {/* Prize magnet — visible above the fold */}
+      <motion.div
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.55 }}
+        className="mt-7 mx-auto max-w-md rounded-2xl px-5 py-4"
+        style={{
+          background:
+            "linear-gradient(135deg, rgba(244,196,122,0.16), rgba(245,158,192,0.10))",
+          border: "1px solid rgba(244,196,122,0.4)",
+        }}
+      >
+        <p className="text-[11px] uppercase tracking-[0.22em] text-foreground/70 mb-1">
+          🎰 Al terminar · Ruleta de feria
+        </p>
+        <p className="font-serif text-base sm:text-lg leading-snug text-foreground">
+          Calcomanía · Marcador · PDF del libro · Capítulo firmado · ó{" "}
+          <span style={{ color: "#ff8c5a", fontWeight: 600 }}>el libro completo gratis</span>
+        </p>
+        <p className="mt-1 text-xs text-foreground/60">
+          Todos se llevan algo. 1 de cada 20 se lleva un libro.
+        </p>
+      </motion.div>
 
       <motion.div
         initial={{ y: 16, opacity: 0 }}
@@ -188,7 +214,7 @@ function Hero({ onBegin }: { onBegin: () => void }) {
           onClick={onBegin}
           className="group relative inline-flex items-center gap-3 rounded-full bg-foreground px-9 py-4 text-background font-medium text-base sm:text-lg transition-transform hover:scale-[1.02]"
         >
-          <span>Empecemos</span>
+          <span>Empecemos · 3 min</span>
           <span
             aria-hidden
             className="inline-block transition-transform group-hover:translate-x-1"
@@ -197,7 +223,7 @@ function Hero({ onBegin }: { onBegin: () => void }) {
           </span>
         </button>
         <p className="text-xs uppercase tracking-[0.18em] text-foreground/50">
-          Pura vida · Menos de 3 min
+          Pura vida · Te llevás algo seguro
         </p>
       </motion.div>
 
@@ -634,6 +660,19 @@ function Result({
               </p>
             </motion.div>
           )}
+
+          {/* Slot machine — the real magnet */}
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.35 }}
+            className="mt-6"
+          >
+            <SlotMachine
+              accentColor={book.palette.accent}
+              inkColor={book.palette.ink}
+            />
+          </motion.div>
 
           {/* CTAs */}
           <motion.div
