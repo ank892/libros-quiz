@@ -58,19 +58,6 @@ export default function Home() {
     setStage("echo");
   };
 
-  const restart = () => {
-    setAnswers([]);
-    setStep(0);
-    setStage("hero");
-    setLastEcho(null);
-    if (typeof window !== "undefined") {
-      (window as unknown as { __forcedWinner?: BookId }).__forcedWinner = undefined;
-      const url = new URL(window.location.href);
-      url.searchParams.delete("b");
-      window.history.replaceState({}, "", url.toString());
-    }
-  };
-
   const beginQuiz = () => {
     setStartedAt(Date.now());
     setStage("quiz");
@@ -112,7 +99,6 @@ export default function Home() {
             bookId={result.winner}
             contributing={result.contributingAnswers}
             elapsedMs={startedAt ? Date.now() - startedAt : 0}
-            onRestart={restart}
           />
         )}
       </AnimatePresence>
@@ -196,11 +182,11 @@ function Hero({ onBegin }: { onBegin: () => void }) {
           🎰 Al terminar · Ruleta de feria
         </p>
         <p className="font-serif text-base sm:text-lg leading-snug text-foreground">
-          Calcomanía · Marcador · PDF del libro · Capítulo firmado · ó{" "}
+          Calcomanía · Marcador · Tarjeta con el PDF · ó{" "}
           <span style={{ color: "#ff8c5a", fontWeight: 600 }}>el libro completo gratis</span>
         </p>
         <p className="mt-1 text-xs text-foreground/60">
-          Todos se llevan algo. 1 de cada 20 se lleva un libro.
+          Todos se llevan algo. 1 de cada 10 se lleva un libro.
         </p>
       </motion.div>
 
@@ -413,13 +399,11 @@ function Result({
   bookId,
   contributing,
   elapsedMs,
-  onRestart,
 }: {
   answers: number[];
   bookId: BookId;
   contributing: { qIdx: number; weight: number; tag: string }[];
   elapsedMs: number;
-  onRestart: () => void;
 }) {
   const book = BOOKS[bookId];
   const seconds = Math.max(20, Math.round(elapsedMs / 1000));
@@ -700,13 +684,6 @@ function Result({
             >
               Conversar con el autor
             </a>
-            <button
-              onClick={onRestart}
-              className="inline-flex items-center gap-2 rounded-full px-4 py-3 text-sm transition-colors"
-              style={{ color: `${book.palette.ink}99` }}
-            >
-              Probar otra vez
-            </button>
           </motion.div>
 
           <motion.p

@@ -11,21 +11,17 @@ export type Prize = {
   /** Color for the prize card */
   color: string;
   /** Rarity tier shown to user */
-  rarity: "comun" | "especial" | "raro" | "jackpot";
+  rarity: "comun" | "especial" | "jackpot";
   /** What the booth attendant should do */
   redeem: string;
 };
 
 /**
  * Probabilities (relative weights, sum = 100):
- *  - Calcomanía (sticker)   : 45  → ~45%
- *  - Marcador de libro      : 30  → ~30%
- *  - Tarjeta con PDF        : 15  → ~15%
- *  - Capítulo extra firmado : 5   → ~5%
- *  - LIBRO físico (jackpot) : 5   → ~5% ("1 de cada 20" — más controlable que "1 de 10")
- *
- * Si querés exactamente 1 de cada 10 para el libro, subí su weight a 10
- * y bajá la calcomanía a 40.
+ *  - Calcomanía (sticker)   : 50  → 50%
+ *  - Marcador de libro      : 25  → 25%
+ *  - Tarjeta con PDF        : 15  → 15%
+ *  - LIBRO físico (jackpot) : 10  → 10%  (1 de cada 10)
  */
 export const PRIZES: Prize[] = [
   {
@@ -33,7 +29,7 @@ export const PRIZES: Prize[] = [
     name: "Calcomanía",
     tagline: "Una calcomanía exclusiva de la portada de tu libro.",
     glyph: "✦",
-    weight: 45,
+    weight: 50,
     color: "#f4c47a",
     rarity: "comun",
     redeem:
@@ -44,7 +40,7 @@ export const PRIZES: Prize[] = [
     name: "Marcador de libro",
     tagline: "Un marcador con una de las frases del libro que te tocó.",
     glyph: "❦",
-    weight: 30,
+    weight: 25,
     color: "#f59ec0",
     rarity: "comun",
     redeem:
@@ -63,24 +59,12 @@ export const PRIZES: Prize[] = [
       "Mostrá esta pantalla en el stand. Te entregamos la tarjeta con el QR. El PDF expira en 30 días.",
   },
   {
-    id: "signed-chapter",
-    name: "Capítulo firmado",
-    tagline:
-      "El primer capítulo de tu libro impreso y firmado por el autor en el momento.",
-    glyph: "✍",
-    weight: 5,
-    color: "#c9b27a",
-    rarity: "raro",
-    redeem:
-      "Mostrá esta pantalla en el stand. Si Miguel está presente, te lo firma frente a vos.",
-  },
-  {
     id: "book",
     name: "¡Un libro físico!",
     tagline:
       "Tu libro recomendado, gratis, en tus manos. Y donamos otro a un paciente o cuidador.",
     glyph: "★",
-    weight: 5,
+    weight: 10,
     color: "#ff8c5a",
     rarity: "jackpot",
     redeem:
