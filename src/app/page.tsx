@@ -437,6 +437,9 @@ function Result({
         color: book.palette.ink,
       }}
     >
+      {/* Mobile-only floating banner pointing to the slot machine */}
+      <SlotBanner accent={book.palette.accent} ink={book.palette.ink} />
+
       <div className="w-full max-w-5xl px-6 py-14 sm:py-20 grid md:grid-cols-[auto_1fr] gap-10 md:gap-14 items-start">
         <motion.div
           initial={{ scale: 0.85, opacity: 0, rotate: -3 }}
@@ -647,6 +650,7 @@ function Result({
 
           {/* Slot machine — the real magnet */}
           <motion.div
+            id="slot-machine"
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.35 }}
@@ -704,7 +708,81 @@ function Result({
   );
 }
 
-/* ---------------- OTHER BOOKS ---------------- */
+/* ---------------- SLOT BANNER (mobile only) ---------------- */
+
+function SlotBanner({ accent, ink }: { accent: string; ink: string }) {
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    // Hide once the slot machine enters the viewport
+    const target = document.getElementById("slot-machine");
+    if (!target) return;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) setVisible(false);
+        }
+      },
+      { threshold: 0.25 },
+    );
+    obs.observe(target);
+    return () => obs.disconnect();
+  }, []);
+
+  const scrollToSlot = () => {
+    const target = document.getElementById("slot-machine");
+    if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  return (
+    <AnimatePresence>
+      {visible && (
+        <motion.button
+          key="slot-banner"
+          initial={{ y: -60, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -60, opacity: 0 }}
+          transition={{ type: "spring", stiffness: 220, damping: 22 }}
+          onClick={scrollToSlot}
+          className="md:hidden fixed left-3 right-3 top-3 z-40 flex items-center justify-between gap-3 rounded-full px-4 py-3 text-left shadow-lg backdrop-blur-md"
+          style={{
+            background: `linear-gradient(135deg, ${accent}d9, ${accent}b3)`,
+            color: "#1a0f08",
+            border: `1px solid ${accent}`,
+          }}
+        >
+          <span className="flex items-center gap-2 min-w-0">
+            <motion.span
+              animate={{ rotate: [0, -8, 8, -4, 4, 0] }}
+              transition={{ duration: 1.4, repeat: Infinity, repeatDelay: 0.6 }}
+              className="text-xl shrink-0"
+              aria-hidden
+            >
+              🎰
+            </motion.span>
+            <span className="min-w-0">
+              <span className="block font-semibold text-sm leading-tight">
+                Tu ruleta está abajo
+              </span>
+              <span className="block text-[11px] uppercase tracking-[0.16em] opacity-80">
+                Tocá para girar
+              </span>
+            </span>
+          </span>
+          <motion.span
+            animate={{ y: [0, 3, 0] }}
+            transition={{ duration: 1.2, repeat: Infinity }}
+            className="text-xl shrink-0"
+            aria-hidden
+          >
+            ↓
+          </motion.span>
+        </motion.button>
+      )}
+    </AnimatePresence>
+  );
+}
+
 
 function OtherBooks({
   current,
