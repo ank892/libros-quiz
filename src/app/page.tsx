@@ -183,10 +183,10 @@ function Hero({ onBegin }: { onBegin: () => void }) {
         </p>
         <p className="font-serif text-base sm:text-lg leading-snug text-foreground">
           Calcomanía · Marcador · Tarjeta con el PDF · ó{" "}
-          <span style={{ color: "#ff8c5a", fontWeight: 600 }}>el libro completo gratis</span>
+          <span style={{ color: "#ff8c5a", fontWeight: 600 }}>el libro firmado, gratis</span>
         </p>
         <p className="mt-1 text-xs text-foreground/60">
-          Todos se llevan algo. 1 de cada 10 se lleva un libro.
+          Todos se llevan algo. 1 de cada 10 se lleva un libro firmado.
         </p>
       </motion.div>
 
@@ -686,6 +686,9 @@ function Result({
             </a>
           </motion.div>
 
+          {/* The other three books */}
+          <OtherBooks current={bookId} accent={book.palette.accent} ink={book.palette.ink} />
+
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -698,5 +701,96 @@ function Result({
         </div>
       </div>
     </motion.section>
+  );
+}
+
+/* ---------------- OTHER BOOKS ---------------- */
+
+function OtherBooks({
+  current,
+  accent,
+  ink,
+}: {
+  current: BookId;
+  accent: string;
+  ink: string;
+}) {
+  const others = (Object.keys(BOOKS) as BookId[]).filter((id) => id !== current);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 1.55 }}
+      className="mt-14"
+    >
+      <p
+        className="text-[11px] uppercase tracking-[0.24em] mb-1"
+        style={{ color: accent }}
+      >
+        Antes de irte
+      </p>
+      <h2
+        className="font-serif text-2xl sm:text-3xl leading-tight"
+        style={{ color: ink }}
+      >
+        Conocé los otros tres libros.
+      </h2>
+      <p className="mt-2 text-sm leading-relaxed" style={{ color: `${ink}99` }}>
+        Tu match fue uno solo, pero estos también pueden estar esperándote —
+        para vos, para alguien de tu casa, para regalar.
+      </p>
+
+      <div className="mt-6 grid gap-4 sm:grid-cols-3">
+        {others.map((id) => {
+          const b = BOOKS[id];
+          return (
+            <a
+              key={id}
+              href={b.cta.buyHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group rounded-2xl border p-4 transition-transform hover:-translate-y-1"
+              style={{
+                borderColor: `${ink}1a`,
+                background: `${ink}05`,
+              }}
+            >
+              <div className="flex gap-4">
+                <div className="w-20 sm:w-24 shrink-0">
+                  <BookCover book={b} small />
+                </div>
+                <div className="min-w-0">
+                  <p
+                    className="font-serif text-base sm:text-lg leading-tight"
+                    style={{ color: ink }}
+                  >
+                    {b.title}
+                  </p>
+                  <p
+                    className="mt-1 text-[11px] uppercase tracking-[0.16em]"
+                    style={{ color: b.palette.accent }}
+                  >
+                    {b.subtitle}
+                  </p>
+                  <p
+                    className="mt-2 text-sm leading-snug"
+                    style={{ color: `${ink}b3` }}
+                  >
+                    {b.forWhom}
+                  </p>
+                </div>
+              </div>
+              <p
+                className="mt-3 text-xs uppercase tracking-[0.18em] group-hover:underline"
+                style={{ color: accent }}
+              >
+                Ver más →
+              </p>
+            </a>
+          );
+        })}
+      </div>
+    </motion.div>
   );
 }

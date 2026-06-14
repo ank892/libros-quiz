@@ -18,10 +18,10 @@ export type Prize = {
 
 /**
  * Probabilities (relative weights, sum = 100):
- *  - Calcomanía (sticker)   : 50  → 50%
- *  - Marcador de libro      : 25  → 25%
- *  - Tarjeta con PDF        : 15  → 15%
- *  - LIBRO físico (jackpot) : 10  → 10%  (1 de cada 10)
+ *  - Calcomanía (sticker)   : 30  → 30%
+ *  - Marcador de libro      : 30  → 30%
+ *  - Tarjeta con PDF        : 30  → 30%
+ *  - LIBRO físico firmado   : 10  → 10%  (1 de cada 10)
  */
 export const PRIZES: Prize[] = [
   {
@@ -29,7 +29,7 @@ export const PRIZES: Prize[] = [
     name: "Calcomanía",
     tagline: "Una calcomanía exclusiva de la portada de tu libro.",
     glyph: "✦",
-    weight: 50,
+    weight: 30,
     color: "#f4c47a",
     rarity: "comun",
     redeem:
@@ -40,7 +40,7 @@ export const PRIZES: Prize[] = [
     name: "Marcador de libro",
     tagline: "Un marcador con una de las frases del libro que te tocó.",
     glyph: "❦",
-    weight: 25,
+    weight: 30,
     color: "#f59ec0",
     rarity: "comun",
     redeem:
@@ -52,7 +52,7 @@ export const PRIZES: Prize[] = [
     tagline:
       "Tarjeta física con QR para descargar el PDF de tu libro recomendado. Para leerlo esta noche.",
     glyph: "✉",
-    weight: 15,
+    weight: 30,
     color: "#9bd1ff",
     rarity: "especial",
     redeem:
@@ -60,15 +60,15 @@ export const PRIZES: Prize[] = [
   },
   {
     id: "book",
-    name: "¡Un libro físico!",
+    name: "¡Un libro firmado!",
     tagline:
-      "Tu libro recomendado, gratis, en tus manos. Y donamos otro a un paciente o cuidador.",
+      "Tu libro recomendado, gratis y firmado por el autor en el momento. Y donamos otro a un paciente o cuidador.",
     glyph: "★",
     weight: 10,
     color: "#ff8c5a",
     rarity: "jackpot",
     redeem:
-      "Mostrá esta pantalla en el stand AHORA MISMO. Te entregamos tu libro al instante (1 por persona).",
+      "Mostrá esta pantalla en el stand AHORA MISMO. Te entregamos tu libro firmado al instante (1 por persona).",
   },
 ];
 
