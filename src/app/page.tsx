@@ -115,7 +115,7 @@ function Hero({ onBegin }: { onBegin: () => void }) {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, scale: 0.98 }}
       transition={{ duration: 0.6 }}
-      className="relative w-full max-w-3xl px-6 py-12 sm:py-20 text-center"
+      className="relative w-full max-w-3xl px-6 py-6 sm:py-20 text-center"
     >
       <div
         aria-hidden
@@ -126,20 +126,11 @@ function Hero({ onBegin }: { onBegin: () => void }) {
         }}
       />
 
-      <motion.span
-        initial={{ y: 8, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.1 }}
-        className="pill mx-auto"
-      >
-        <span aria-hidden>🇨🇷</span> Miguel Fuentes · Costa Rica
-      </motion.span>
-
       <motion.h1
         initial={{ y: 12, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.2, duration: 0.7 }}
-        className="font-serif mt-7 text-[2.6rem] sm:text-6xl leading-[1.02] tracking-tight"
+        transition={{ delay: 0.15, duration: 0.6 }}
+        className="font-serif text-[2.1rem] sm:text-6xl leading-[1.05] tracking-tight"
       >
         Decime cómo estás hoy.
         <br />
@@ -157,12 +148,12 @@ function Hero({ onBegin }: { onBegin: () => void }) {
       <motion.p
         initial={{ y: 12, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.4, duration: 0.7 }}
-        className="mx-auto mt-6 max-w-xl text-base sm:text-lg text-foreground/80 leading-relaxed"
+        transition={{ delay: 0.3, duration: 0.6 }}
+        className="mx-auto mt-4 sm:mt-6 max-w-xl text-sm sm:text-lg text-foreground/80 leading-relaxed"
       >
-        Siete preguntas honestas. Tres minutos. Sin email, sin trampa, sin
-        algoritmo que te siga después. Al final te explico, con tus propias
-        respuestas, por qué te recomiendo el libro que te recomiendo —
+        Siete preguntas. Tres minutos. Sin email, sin trampa. Al final te
+        explico, con tus propias respuestas, por qué te recomiendo el libro
+        que te recomiendo —
         <strong className="text-foreground"> y tirás la ruleta para llevarte algo.</strong>
       </motion.p>
 
@@ -170,22 +161,22 @@ function Hero({ onBegin }: { onBegin: () => void }) {
       <motion.div
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.55 }}
-        className="mt-7 mx-auto max-w-md rounded-2xl px-5 py-4"
+        transition={{ delay: 0.4 }}
+        className="mt-4 sm:mt-7 mx-auto max-w-md rounded-2xl px-4 py-3 sm:px-5 sm:py-4"
         style={{
           background:
             "linear-gradient(135deg, rgba(244,196,122,0.16), rgba(245,158,192,0.10))",
           border: "1px solid rgba(244,196,122,0.4)",
         }}
       >
-        <p className="text-[11px] uppercase tracking-[0.22em] text-foreground/70 mb-1">
+        <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.2em] text-foreground/70 mb-1">
           🎰 Al terminar · Ruleta de feria
         </p>
-        <p className="font-serif text-base sm:text-lg leading-snug text-foreground">
+        <p className="font-serif text-sm sm:text-lg leading-snug text-foreground">
           Calcomanía · Marcador · Tarjeta con el PDF · ó{" "}
           <span style={{ color: "#ff8c5a", fontWeight: 600 }}>el libro firmado, gratis</span>
         </p>
-        <p className="mt-1 text-xs text-foreground/60">
+        <p className="mt-1 text-[11px] sm:text-xs text-foreground/60">
           Todos se llevan algo. 1 de cada 10 se lleva un libro firmado.
         </p>
       </motion.div>
@@ -193,8 +184,8 @@ function Hero({ onBegin }: { onBegin: () => void }) {
       <motion.div
         initial={{ y: 16, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        transition={{ delay: 0.6, duration: 0.7 }}
-        className="mt-9 flex flex-col items-center gap-4"
+        transition={{ delay: 0.55, duration: 0.6 }}
+        className="mt-5 sm:mt-9 flex flex-col items-center gap-3"
       >
         <button
           onClick={onBegin}
@@ -208,7 +199,7 @@ function Hero({ onBegin }: { onBegin: () => void }) {
             →
           </span>
         </button>
-        <p className="text-xs uppercase tracking-[0.18em] text-foreground/50">
+        <p className="text-[10px] sm:text-xs uppercase tracking-[0.18em] text-foreground/50">
           Pura vida · Te llevás algo seguro
         </p>
       </motion.div>
@@ -711,22 +702,39 @@ function Result({
 /* ---------------- SLOT BANNER (mobile only) ---------------- */
 
 function SlotBanner({ accent, ink }: { accent: string; ink: string }) {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    // Hide once the slot machine enters the viewport
+    // Show only after user scrolls past the cover; hide once slot enters view
+    let scrolled = false;
+    const onScroll = () => {
+      if (window.scrollY > 120) {
+        scrolled = true;
+        setVisible(true);
+      } else if (window.scrollY < 40) {
+        setVisible(false);
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+
     const target = document.getElementById("slot-machine");
-    if (!target) return;
-    const obs = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) setVisible(false);
-        }
-      },
-      { threshold: 0.25 },
-    );
-    obs.observe(target);
-    return () => obs.disconnect();
+    let obs: IntersectionObserver | null = null;
+    if (target) {
+      obs = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) setVisible(false);
+          }
+        },
+        { threshold: 0.25 },
+      );
+      obs.observe(target);
+    }
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      obs?.disconnect();
+    };
   }, []);
 
   const scrollToSlot = () => {
@@ -739,14 +747,14 @@ function SlotBanner({ accent, ink }: { accent: string; ink: string }) {
       {visible && (
         <motion.button
           key="slot-banner"
-          initial={{ y: -60, opacity: 0 }}
+          initial={{ y: 80, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          exit={{ y: -60, opacity: 0 }}
+          exit={{ y: 80, opacity: 0 }}
           transition={{ type: "spring", stiffness: 220, damping: 22 }}
           onClick={scrollToSlot}
-          className="md:hidden fixed left-3 right-3 top-3 z-40 flex items-center justify-between gap-3 rounded-full px-4 py-3 text-left shadow-lg backdrop-blur-md"
+          className="md:hidden fixed left-3 right-3 bottom-4 z-40 flex items-center justify-between gap-3 rounded-full px-4 py-3 text-left shadow-2xl backdrop-blur-md"
           style={{
-            background: `linear-gradient(135deg, ${accent}d9, ${accent}b3)`,
+            background: `linear-gradient(135deg, ${accent}f2, ${accent}cc)`,
             color: "#1a0f08",
             border: `1px solid ${accent}`,
           }}
@@ -762,7 +770,7 @@ function SlotBanner({ accent, ink }: { accent: string; ink: string }) {
             </motion.span>
             <span className="min-w-0">
               <span className="block font-semibold text-sm leading-tight">
-                Tu ruleta está abajo
+                Seguí abajo · tu ruleta espera
               </span>
               <span className="block text-[11px] uppercase tracking-[0.16em] opacity-80">
                 Tocá para girar
